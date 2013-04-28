@@ -1,0 +1,4 @@
+User-agent: *
+Disallow: 
+
+Sitemap: http://colinJohnston.github.io/sitemap.xml 
