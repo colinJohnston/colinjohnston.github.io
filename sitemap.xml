@@ -1,12 +1,16 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>
     <url>
+        <loc>http://colinJohnston.github.io/blog/2011/12/06/scala-ide-2-dot-0-0-dot-rc2/</loc>
+        <lastmod>2013-04-28T23:18:26-04:00</lastmod>
+    </url>
+    <url>
         <loc>http://colinJohnston.github.io/blog/archives/</loc>
-        <lastmod>2013-04-28T18:31:15-04:00</lastmod>
+        <lastmod>2013-04-28T23:18:26-04:00</lastmod>
     </url>
     <url>
         <loc>http://colinJohnston.github.io/</loc>
-        <lastmod>2013-04-28T18:31:15-04:00</lastmod>
+        <lastmod>2013-04-28T23:18:26-04:00</lastmod>
     </url>
     <url>
         <loc>http://colinJohnston.github.io/robots.txt</loc>

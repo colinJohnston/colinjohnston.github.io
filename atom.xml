@@ -1,16 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[My Octopress Blog]]></title>
+  <title><![CDATA[Colin Johnston]]></title>
   <link href="http://colinJohnston.github.io/atom.xml" rel="self"/>
   <link href="http://colinJohnston.github.io/"/>
-  <updated>2013-04-28T18:32:32-04:00</updated>
+  <updated>2013-04-28T23:33:22-04:00</updated>
   <id>http://colinJohnston.github.io/</id>
   <author>
-    <name><![CDATA[Your Name]]></name>
+    <name><![CDATA[Colin Johnston]]></name>
     
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Scala-IDE 2.0.0.RC2, sbt 0.11.2, lift 2.4-M5; now with fewer gumption traps]]></title>
+    <link href="http://colinJohnston.github.io/blog/2011/12/06/scala-ide-2-dot-0-0-dot-rc2/"/>
+    <updated>2011-12-06T14:38:00-05:00</updated>
+    <id>http://colinJohnston.github.io/blog/2011/12/06/scala-ide-2-dot-0-0-dot-rc2</id>
+    <content type="html"><![CDATA[<p>I&#8217;m usually a little behind the bleeding edge when it comes to tracking new versions of libraries and frameworks. In spite of this, progress on the Scala language and <strong>thankfully</strong> the Scala IDE for Eclipse have been teasing me forward; following is an account of how I got them to play nicely.</p>
+
+<p>Firstly, I was upgrading from Scala IDE 2.0.0-beta9, which was using the scala 2.9.0-1 compiler. Scala IDE 2.0.0.RC2 uses the scala 2.9.1-final compiler, which is binary compatible with 2.9.0-1. Great. In Eclipse: Help, Check for Updates, a few clicks and a restart, and Eclipse is happy.</p>
+
+<p>If you are installing Scala-IDE for the first time, it can&#8217;t hurt to follow the official instructions:</p>
+
+<p><a href="https://www.assembla.com/spaces/scala-ide/wiki/Getting_Started">https://www.assembla.com/spaces/scala-ide/wiki/Getting_Started</a></p>
+
+<p>Once sorted, it was time to update the sbt build on the command line. Since I was about to mess around with Eclipse project meta-data and dependencies I killed Eclipse before continuing.</p>
+
+<p>I&#8217;m on OS X; with homebrew, updating to the newest version of sbt was as simple as:</p>
+
+<p>$brew update sbt</p>
+
+<p>Similarly, sbt has its own official instructions:</p>
+
+<p><a href="https://github.com/harrah/xsbt/wiki/Getting-Started-Setup">https://github.com/harrah/xsbt/wiki/Getting-Started-Setup</a></p>
+
+<p>Here is the top level build.sbt:</p>
+
+<div><script src='https://gist.github.com/1439999.js'></script>
+<noscript><pre><code></code></pre></noscript></div>
+
+
+<p>The <strong>ScalaToolsSnapshots</strong> repo is for the <strong>specs</strong> dependency, I have a bunch of old tests that need to be updated to use <strong>specs2</strong>. If you are already a <strong>specs2</strong> user, you could replace the <strong>specs</strong> depedency with:</p>
+
+<p>&#8220;org.specs2&#8221; %% &#8220;specs2&#8221; % &#8220;1.6.1&#8221;,</p>
+
+<p>To package this project as a war, and embed a container into your build, you need to use the <a href="" title="https://github.com/siasia/xsbt-web-plugin">xsbt-web-plugin</a> (Web support was removed from core sbt in 0.10). To build Eclipse project metadata, there is the <a href="" title="https://github.com/typesafehub/sbteclipse">sbteclipse plugin</a> Plugins are defined in <strong>project/build.sbt</strong> (a change in sbt 0.11, formerly <strong>project/plugins/build.sbt</strong>)</p>
+
+<p>here is the project/build.sbt:</p>
+
+<div><script src='https://gist.github.com/1440122.js'></script>
+<noscript><pre><code></code></pre></noscript></div>
+
+
+<p>sbt 0.11 has a new syntax for adding plugins (addSbtPlugin()), but the xsbt-web-plugin has not been updated for this yet.</p>
+
+<p><strong>sbteclipse</strong> task:</p>
+
+<ol>
+<li>$sbt</li>
+<li>&gt;eclipse with-sources</li>
+</ol>
+
+
+<p>&#8230;creates a .project file, and other metadata for eclipse, and attaches the sources and docs (if available) to your project&#8217;s dependencies (I haven&#8217;t figured out how to specify the &#8220;with-sources&#8221; on the shell yet, so the instruction is to run the eclipse task from within the sbt shell). I&#8217;ve found the &#8220;with-sources&#8221; feature to be invaluable, as navigating the source code for new-ish libraries is the best way to figure out what is going on. Hopefully &#8220;some-day-soon&#8221; someone will implement scaladoc hover support in Scala IDE, which would be even better.</p>
+
+<p>After running the &#8220;eclipse with-sources&#8221; task, you can import your project into Eclipse by using the &#8220;File&#8230; Import&#8230; Existing Projects into Workspace&#8221; feature. The imported projects will have the &#8220;scala-nature&#8221;, the classpath configured, and so on.</p>
+
+<p><em>xsbt-web-plugin</em> tasks:</p>
+
+<p>$sbt ~container-start</p>
+
+<p>&#8230;starts up jetty on localhost:8080 and reloads on source changes so one can rapidly iterate during development. Eventually all the reloads cause sbt to run out of memory, but it is still faster (though occasionally frustrating) to work this way compared to starting up jetty from scratch each time. By the way, it is the tilde (~) that tells sbt to scan for changes.</p>
+
+<p>This version of xsbt-web-plugin hooks into the &#8220;package&#8221; task, so running</p>
+
+<p>$sbt package</p>
+
+<p>&#8230;will generate a .war file that can be deployed elsewhere.</p>
+
+<p>That&#8217;s it! Hopefully the progress made on multiple fronts lately can entice a few more developers to try their hand at scala and lift. It reallly is a very expressive platform from which to build, even when hampered by scattershot documentation, and somewhat arcane tooling.</p>
+]]></content>
+  </entry>
   
 </feed>
